@@ -13,8 +13,8 @@ public class DBHelper {
 
     public static SQLiteDatabase db;
     private  Context context=null;
-    private  DBBase dbBase=null;
-    private static DBHelper dbHelper;
+    public   DBBase dbBase=null;
+    public static DBHelper dbHelper;
 
      public DBHelper(Context context){
          this.context=context;

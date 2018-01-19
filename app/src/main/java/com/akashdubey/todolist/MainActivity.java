@@ -28,12 +28,12 @@ import android.widget.Toast;
 import db.DBHelper;
 import utils.Constants;
 
-    public class MainActivity extends AppCompatActivity implements View.OnClickListener, AddNewTask.AddNewTaskListener{
-    ImageView status;
+    public class MainActivity extends AppCompatActivity implements View.OnClickListener, AddNewTask.AddNewTaskListener, MyCursorAdapter.MarkCompleteListener{
+
     ListView listView;
     DBHelper dbHelper;
     MyCursorAdapter myCursorAdapter;
-
+    long row;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,17 +71,6 @@ import utils.Constants;
 
         @Override
         public void onClick(View view) {
-            switch (view.getId()){
-                case R.id.statusIV:
-                    if(status.getDrawable().getConstantState()==getResources().getDrawable(R.drawable.incomplete).getConstantState()){
-                        status.setImageResource(R.drawable.complete);
-                        Toast.makeText(MainActivity.this, "Completed", Toast.LENGTH_SHORT).show();
-                    }else{
-                        status.setImageResource(R.drawable.incomplete);
-                        Toast.makeText(MainActivity.this, "Undo", Toast.LENGTH_SHORT).show();
-                    }
-                    break;
-            }
 
         }
 
@@ -95,17 +84,34 @@ import utils.Constants;
         public void InsertData(String title, String desc, String date) {
             //initialising db and opening connection
             dbHelper.openConnection();
+
+            //getting ready to insert data
             ContentValues value= new ContentValues();
             value.put(Constants.STATUS,"0");
             value.put(Constants.TITLE,title);
             value.put(Constants.DESCRIPTION,desc);
             value.put(Constants.DATE,date);
-            long row=dbHelper.db.insert(Constants.TABLE_NAME,null,value);
-          ((BaseAdapter)listView.getAdapter()).notifyDataSetChanged();
-          myCursorAdapter.getAllData();
-          myCursorAdapter.swapCursor(MyCursorAdapter.cursor1);
 
+            //the actual insert
+            row=dbHelper.db.insert(Constants.TABLE_NAME,null,value);
+            ((BaseAdapter)listView.getAdapter()).notifyDataSetChanged();
+            myCursorAdapter.getAllData();
+            myCursorAdapter.swapCursor(MyCursorAdapter.cursor1);
 
+            //closing db connection explicitly
+            dbHelper.closeConnection();
         }
 
+        @Override
+        public void markComplete(String status) {
+            dbHelper.openConnection();
+
+            ContentValues value= new ContentValues();
+            value.put(Constants.STATUS,status);
+            row=dbHelper.db.update(Constants.TABLE_NAME,value,Constants.STATUS,null);
+            myCursorAdapter.getAllData();
+            myCursorAdapter.swapCursor(MyCursorAdapter.cursor1);
+
+            dbHelper.closeConnection();
+        }
     }

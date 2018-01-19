@@ -71,23 +71,6 @@ public class AddNewTask extends AppCompatDialogFragment{
 
     }
 
-//    @Override
-//    public void onClick(View view) {
-//        switch(view.getId()){
-//            case R.id.cancelBtn:
-//                /// close dialog.
-//
-//                Toast.makeText(getContext(), "cancel", Toast.LENGTH_SHORT).show();
-//                break;
-//            case R.id.saveBtn:
-//
-//                Toast.makeText(getContext(), "Save", Toast.LENGTH_SHORT).show();
-//                break;
-//
-//                default:
-//                    Toast.makeText(getContext(), ""+view.getId(), Toast.LENGTH_SHORT).show();
-//        }
-//    }
 
     public interface AddNewTaskListener{
         void InsertData(String title, String desc, String date);
