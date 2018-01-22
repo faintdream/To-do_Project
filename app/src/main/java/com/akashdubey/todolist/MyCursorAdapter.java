@@ -53,7 +53,7 @@ public class MyCursorAdapter extends CursorAdapter {
         title = (TextView)view.findViewById(R.id.titleTV);
         description = (TextView)view.findViewById(R.id.descriptionTV);
         status=(ImageView)view.findViewById(R.id.statusIV);
-        status.setTag(cursor.getPosition());
+        status.setTag(cursor1.getPosition());
         date1.setText(cursor1.getString(cursor1.getColumnIndex(Constants.DATE)));
         date2.setText(cursor1.getString(cursor1.getColumnIndex(Constants.DATE)));
         title.setText(cursor1.getString(cursor1.getColumnIndex(Constants.TITLE)));
@@ -68,8 +68,8 @@ public class MyCursorAdapter extends CursorAdapter {
                             String tmpStatus="1";
                             Object tag= view.getTag();
                             tmpPosition=(Integer)tag;
-                            ImageView v=(ImageView)view.findViewWithTag(tag);
-                            v.setImageResource(R.drawable.complete);
+//                            ImageView v=(ImageView)view.findViewWithTag(tag);
+//                            v.setImageResource(R.drawable.complete);
                             cursor1.moveToPosition(tmpPosition);
                             tmpPosition=Integer.parseInt(cursor.getString(0));
                             Toast.makeText(context, "row ="+cursor1.getString(0)+" ID = "+cursor1.getString(1), Toast.LENGTH_SHORT).show();
