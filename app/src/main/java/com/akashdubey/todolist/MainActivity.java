@@ -109,9 +109,9 @@ import utils.Constants;
             value.put(Constants.STATUS,status);
             //MyCursorAdapter.cursor1.moveToPosition(position);
 
-         //   row=dbHelper.db.update(Constants.TABLE_NAME,value,Constants.ID+"="+position.toString(),null);
+            row=dbHelper.db.update(Constants.TABLE_NAME,value,Constants.ID+"= ?",new String[]{position.toString()});
             myCursorAdapter.getAllData();
             myCursorAdapter.swapCursor(MyCursorAdapter.cursor1);
-            dbHelper.closeConnection();
+//            dbHelper.closeConnection();
         }
     }

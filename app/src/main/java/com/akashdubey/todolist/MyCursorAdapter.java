@@ -71,7 +71,8 @@ public class MyCursorAdapter extends CursorAdapter {
                             ImageView v=(ImageView)view.findViewWithTag(tag);
                             v.setImageResource(R.drawable.complete);
                             cursor1.moveToPosition(tmpPosition);
-                            Toast.makeText(context, ""+cursor1.getString(0), Toast.LENGTH_SHORT).show();
+                            tmpPosition=Integer.parseInt(cursor.getString(0));
+                            Toast.makeText(context, "row ="+cursor1.getString(0)+" ID = "+cursor1.getString(1), Toast.LENGTH_SHORT).show();
 //                            Toast.makeText(context, "position"+tmpPosition, Toast.LENGTH_SHORT).show();
                             listener.markComplete(tmpStatus,tmpPosition);
                         }
