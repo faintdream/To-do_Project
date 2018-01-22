@@ -27,7 +27,8 @@ public class MyCursorAdapter extends CursorAdapter {
     TextView                description;
     ImageView               status;
     DBHelper                dbHelper ;
-    MarkCompleteListener    listener ;
+    public MarkCompleteListener    listener ;
+    private  Integer tmpPosition=0;
 
     public MyCursorAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
@@ -43,18 +44,21 @@ public class MyCursorAdapter extends CursorAdapter {
         return view;
     }
 
+
     @Override
-    public void bindView(View view, final Context context, Cursor cursor) {
+    public void bindView(View view, final Context context, final Cursor cursor) {
 
         date1 = (TextView)view.findViewById(R.id.date1TV);
         date2 = (TextView)view.findViewById(R.id.date2TV);
         title = (TextView)view.findViewById(R.id.titleTV);
         description = (TextView)view.findViewById(R.id.descriptionTV);
         status=(ImageView)view.findViewById(R.id.statusIV);
+        status.setTag(cursor.getPosition());
         date1.setText(cursor1.getString(cursor1.getColumnIndex(Constants.DATE)));
         date2.setText(cursor1.getString(cursor1.getColumnIndex(Constants.DATE)));
         title.setText(cursor1.getString(cursor1.getColumnIndex(Constants.TITLE)));
         description.setText(cursor1.getString(cursor1.getColumnIndex(Constants.DESCRIPTION)));
+        listener = (MarkCompleteListener)context;
 
             status.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -62,40 +66,39 @@ public class MyCursorAdapter extends CursorAdapter {
                     if(cursor1.getString(cursor1.getColumnIndex(Constants.STATUS)).equals("0")){
                         {
                             String tmpStatus="1";
-                            listener= new MarkCompleteListener() {
-                                @Override
-                                public void markComplete(String status) {
-
-                                }
-                            };
-                            listener.markComplete(tmpStatus);
-                            status.setImageResource(R.drawable.complete);
+                            Object tag= view.getTag();
+                            tmpPosition=(Integer)tag;
+                            ImageView v=(ImageView)view.findViewWithTag(tag);
+                            v.setImageResource(R.drawable.complete);
+                            cursor1.moveToPosition(tmpPosition);
+                            Toast.makeText(context, ""+cursor1.getString(0), Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(context, "position"+tmpPosition, Toast.LENGTH_SHORT).show();
+                            listener.markComplete(tmpStatus,tmpPosition);
                         }
-
                         //                    Toast.makeText(context, "getting the thumbsup fine", Toast.LENGTH_SHORT).show();
                     }
-
-
                 }
             });
-
     }
+
+
 
     void getAllData(){
         //db query to list all tasks
         Log.d("sometag","MyCursorAdapter dbHelper opens db connection");
-        if (DBHelper.db.isOpen()){
+        //dbHelper.openConnection();
+
             cursor1= DBHelper.db.query(
                     Constants.TABLE_NAME,
                     new String[]{"rowid _id",Constants.TITLE,Constants.DATE,Constants.DESCRIPTION,Constants.STATUS},
                     Constants.STATUS+"=?",new String[]{"0"},null,null,null);
-        }
 
     }
 
 
 public interface MarkCompleteListener {
-        public void markComplete(String status);
+
+        public void markComplete(String status, Integer position);
 }
 
 

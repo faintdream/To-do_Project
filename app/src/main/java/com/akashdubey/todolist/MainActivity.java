@@ -103,15 +103,15 @@ import utils.Constants;
         }
 
         @Override
-        public void markComplete(String status) {
+        public void markComplete(String status, Integer position) {
             dbHelper.openConnection();
-
             ContentValues value= new ContentValues();
             value.put(Constants.STATUS,status);
-            row=dbHelper.db.update(Constants.TABLE_NAME,value,Constants.STATUS,null);
+            //MyCursorAdapter.cursor1.moveToPosition(position);
+
+         //   row=dbHelper.db.update(Constants.TABLE_NAME,value,Constants.ID+"="+position.toString(),null);
             myCursorAdapter.getAllData();
             myCursorAdapter.swapCursor(MyCursorAdapter.cursor1);
-
             dbHelper.closeConnection();
         }
     }
