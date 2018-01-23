@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -52,6 +53,16 @@ import utils.Constants;
         myCursorAdapter.getAllData();
         listView.setAdapter(myCursorAdapter);
         myCursorAdapter.changeCursor(MyCursorAdapter.cursor1);
+
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+
+                Toast.makeText(MainActivity.this, "list item clicked", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
         @Override
@@ -73,6 +84,8 @@ import utils.Constants;
             }
             return super.onOptionsItemSelected(item);
         }
+
+
 
         @Override
         public void onClick(View view) {
