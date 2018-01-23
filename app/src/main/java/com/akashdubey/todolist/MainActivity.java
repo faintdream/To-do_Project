@@ -42,7 +42,16 @@ import utils.Constants;
     MyCursorAdapter myCursorAdapter;
     long row;
 
-    @Override
+        @Override
+        protected void onRestart() {
+            super.onRestart();
+            myCursorAdapter= new MyCursorAdapter(this, MyCursorAdapter.cursor1,0);
+            myCursorAdapter.getAllData();
+            listView.setAdapter(myCursorAdapter);
+            myCursorAdapter.changeCursor(MyCursorAdapter.cursor1);
+        }
+
+        @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
