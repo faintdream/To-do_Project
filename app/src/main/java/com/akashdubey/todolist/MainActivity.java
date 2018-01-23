@@ -25,6 +25,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import db.DBHelper;
 import utils.Constants;
 
@@ -85,6 +90,17 @@ import utils.Constants;
             //initialising db and opening connection
             dbHelper.openConnection();
 
+
+            // unused code i am going to remove it, i shall not fail to do so..
+
+            Date tmpDate= null;
+            try {
+
+                tmpDate = new SimpleDateFormat("yy-mm-dd", Locale.ENGLISH).parse(date);
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
             //getting ready to insert data
             ContentValues value= new ContentValues();
             value.put(Constants.STATUS,"0");
@@ -92,7 +108,7 @@ import utils.Constants;
             value.put(Constants.DESCRIPTION,desc);
             value.put(Constants.DATE,date);
 
-            //the actual insert
+//            the actual insert
             row=dbHelper.db.insert(Constants.TABLE_NAME,null,value);
             ((BaseAdapter)listView.getAdapter()).notifyDataSetChanged();
             myCursorAdapter.getAllData();

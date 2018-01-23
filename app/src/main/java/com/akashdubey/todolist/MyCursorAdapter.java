@@ -71,13 +71,13 @@ public class MyCursorAdapter extends CursorAdapter {
 //                            ImageView v=(ImageView)view.findViewWithTag(tag);
 //                            v.setImageResource(R.drawable.complete);
                             cursor1.moveToPosition(tmpPosition);
-                            tmpPosition=Integer.parseInt(cursor.getString(0));
-                            Toast.makeText(context, "row ="+cursor1.getString(0)+" ID = "+cursor1.getString(1), Toast.LENGTH_SHORT).show();
+                    tmpPosition=Integer.parseInt(cursor.getString(0));
+                    Toast.makeText(context, "row ="+cursor1.getString(0)+" ID = "+cursor1.getString(1), Toast.LENGTH_SHORT).show();
 //                            Toast.makeText(context, "position"+tmpPosition, Toast.LENGTH_SHORT).show();
-                            listener.markComplete(tmpStatus,tmpPosition);
-                        }
-                        //                    Toast.makeText(context, "getting the thumbsup fine", Toast.LENGTH_SHORT).show();
-                    }
+                    listener.markComplete(tmpStatus,tmpPosition);
+                }
+                //                    Toast.makeText(context, "getting the thumbsup fine", Toast.LENGTH_SHORT).show();
+            }
                 }
             });
     }
@@ -87,12 +87,13 @@ public class MyCursorAdapter extends CursorAdapter {
     void getAllData(){
         //db query to list all tasks
         Log.d("sometag","MyCursorAdapter dbHelper opens db connection");
-        //dbHelper.openConnection();
+//        dbHelper.openConnection();
 
             cursor1= DBHelper.db.query(
                     Constants.TABLE_NAME,
                     new String[]{"rowid _id",Constants.TITLE,Constants.DATE,Constants.DESCRIPTION,Constants.STATUS},
-                    Constants.STATUS+"=?",new String[]{"0"},null,null,null);
+                    Constants.STATUS+"=?",new String[]{"0"},null,null,Constants.DATE +" ASC ");
+
 
     }
 

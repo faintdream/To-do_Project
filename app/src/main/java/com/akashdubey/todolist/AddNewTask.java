@@ -57,8 +57,7 @@ public class AddNewTask extends AppCompatDialogFragment{
                 Integer year=mdatePicker.getYear();
                 Integer month=mdatePicker.getMonth()+1;
                 Integer day=mdatePicker.getDayOfMonth();
-
-                String tmpDate=day.toString()+"/"+month.toString()+"/"+year.toString();
+                String tmpDate=year.toString()+"-"+month.toString()+"-"+day.toString();
                 listener.InsertData(mTitle.getText().toString(),
                         mDesc.getText().toString(),tmpDate);
                 dismiss();

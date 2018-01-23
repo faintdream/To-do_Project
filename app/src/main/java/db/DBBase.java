@@ -19,7 +19,7 @@ public class DBBase extends SQLiteOpenHelper {
             Constants.ID+" INTEGER PRIMARY KEY AUTOINCREMENT, "+
             Constants.TITLE+" TEXT, "+
             Constants.DESCRIPTION+" TEXT, "+
-            Constants.DATE+" TEXT, "+
+            Constants.DATE+" timestamp, "+
             Constants.STATUS+" INTEGER );";
 
 
