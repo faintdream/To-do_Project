@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.ContentValues;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.icu.util.Calendar;
 import android.support.v7.app.AlertDialog;
@@ -81,21 +82,22 @@ import utils.Constants;
                     AddNewTask obj= new AddNewTask();
                     obj.show(getSupportFragmentManager(),"some tag");
                     break;
+
+                case R.id.actionAllDone:
+                    Intent action= new Intent(MainActivity.this,CompletedTasks.class);
+                    startActivity(action);
+                    break;
             }
             return super.onOptionsItemSelected(item);
         }
 
-
-
         @Override
         public void onClick(View view) {
-
         }
 
         public void openAddTask(){
             AddNewTask obj= new AddNewTask();
             obj.show(getSupportFragmentManager(),"some tag");
-
         }
 
         @Override
@@ -103,17 +105,6 @@ import utils.Constants;
             //initialising db and opening connection
             dbHelper.openConnection();
 
-
-            // unused code i am going to remove it, i shall not fail to do so..
-
-            Date tmpDate= null;
-            try {
-
-                tmpDate = new SimpleDateFormat("yy-mm-dd", Locale.ENGLISH).parse(date);
-
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
             //getting ready to insert data
             ContentValues value= new ContentValues();
             value.put(Constants.STATUS,"0");
@@ -121,7 +112,7 @@ import utils.Constants;
             value.put(Constants.DESCRIPTION,desc);
             value.put(Constants.DATE,date);
 
-//            the actual insert
+            //the actual insert
             row=dbHelper.db.insert(Constants.TABLE_NAME,null,value);
             ((BaseAdapter)listView.getAdapter()).notifyDataSetChanged();
             myCursorAdapter.getAllData();

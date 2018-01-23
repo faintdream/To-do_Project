@@ -98,10 +98,24 @@ public class MyCursorAdapter extends CursorAdapter {
     }
 
 
+    void getCompletedTaskData(){
+        //db query to list all tasks
+        Log.d("sometag","MyCursorAdapter dbHelper opens db connection");
+//        dbHelper.openConnection();
+
+        cursor1= DBHelper.db.query(
+                Constants.TABLE_NAME,
+                new String[]{"rowid _id",Constants.TITLE,Constants.DATE,Constants.DESCRIPTION,Constants.STATUS},
+                Constants.STATUS+"=?",new String[]{"1"},null,null,Constants.DATE +" DESC ");
+
+
+    }
+
 public interface MarkCompleteListener {
 
         public void markComplete(String status, Integer position);
 }
+
 
 
 }
