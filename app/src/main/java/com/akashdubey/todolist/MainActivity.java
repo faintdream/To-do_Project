@@ -164,8 +164,16 @@ import utils.Constants;
 
 
         @Override
-        public void ModifyTask(String title, String desc, String date) {
+        public void ModifyTask(String id,String title, String desc, String date) {
+            dbHelper.openConnection();
+            ContentValues value= new ContentValues();
+            value.put(Constants.TITLE,title);
+            value.put(Constants.DESCRIPTION, desc);
+            value.put(Constants.DATE,date);
 
+            row=dbHelper.db.update(Constants.TABLE_NAME,value,Constants.ID+"= ?",new String[]{id.toString()});
+            myCursorAdapter.getAllData();
+            myCursorAdapter.swapCursor(MyCursorAdapter.cursor1);
         }
     }
 

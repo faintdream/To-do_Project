@@ -57,7 +57,7 @@ public class ModifyTask extends AppCompatDialogFragment  {
         int day=Integer.valueOf(split[2]);
         mdatePicker.updateDate(year,month,day);
 
-//        Toast.makeText(getContext(), ""+m.mainTitle, Toast.LENGTH_SHORT).show();
+
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -71,7 +71,7 @@ public class ModifyTask extends AppCompatDialogFragment  {
                 Integer month=mdatePicker.getMonth()+1;
                 Integer day=mdatePicker.getDayOfMonth();
                 String tmpDate=year.toString()+"-"+month.toString()+"-"+day.toString();
-                listener.ModifyTask(mTitle.getText().toString(),
+                listener.ModifyTask(m.mainId,mTitle.getText().toString(),
                         mDesc.getText().toString(),tmpDate);
                 dismiss();
             }
@@ -84,7 +84,7 @@ public class ModifyTask extends AppCompatDialogFragment  {
     }
 
 public interface ModifyTaskListner{
-        void ModifyTask(String title, String desc, String date);
+        void ModifyTask(String id,String title, String desc, String date);
 
 }
 
