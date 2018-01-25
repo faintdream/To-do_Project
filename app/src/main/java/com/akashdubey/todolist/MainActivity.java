@@ -43,9 +43,7 @@ import utils.Constants;
     MyCursorAdapter myCursorAdapter;
     long row;
     ModifyTask.ModifyTaskCursorListener modifyTaskCursorListener;
-    public static String mainTitle, mainDesc;
-
-
+    public static String mainTitle, mainDesc,mainDate,mainId;
 
         @Override
         protected void onRestart() {
@@ -75,7 +73,6 @@ import utils.Constants;
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
              Cursor myCursor= myCursorAdapter.getSpecificData(i);
              ModifyTask obj= new ModifyTask();
              obj.show(getSupportFragmentManager(),"specifictag");
@@ -158,9 +155,10 @@ import utils.Constants;
 
         @Override
         public void SendCursorInfo(Cursor c1) {
-
             mainTitle=c1.getString(1);
             mainDesc=c1.getString(2);
+            mainDate=c1.getString(3);
+            mainId=c1.getString(0);
 
         }
 

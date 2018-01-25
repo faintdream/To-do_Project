@@ -50,7 +50,14 @@ public class ModifyTask extends AppCompatDialogFragment  {
 
         mTitle.setText(m.mainTitle);
         mDesc.setText(m.mainDesc);
-        Toast.makeText(getContext(), ""+m.mainTitle, Toast.LENGTH_SHORT).show();
+
+        String [] split=m.mainDate.split("-");
+        int year=Integer.valueOf(split[0]);
+        int month=(Integer.valueOf(split[1])-1);
+        int day=Integer.valueOf(split[2]);
+        mdatePicker.updateDate(year,month,day);
+
+//        Toast.makeText(getContext(), ""+m.mainTitle, Toast.LENGTH_SHORT).show();
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -75,16 +82,6 @@ public class ModifyTask extends AppCompatDialogFragment  {
 
 
     }
-
-//    @Override
-//    public void SendCursorInfo(Cursor c1) {
-//        tmpTitle=c1.getString(1);
-//        tmpDesc=c1.getString(2);
-////        //datpicker is left
-
-
-//    }
-
 
 public interface ModifyTaskListner{
         void ModifyTask(String title, String desc, String date);

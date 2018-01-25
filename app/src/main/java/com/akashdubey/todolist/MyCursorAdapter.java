@@ -107,14 +107,11 @@ public class MyCursorAdapter extends CursorAdapter {
 
      Cursor getSpecificData(int tmpPosition){
 
-        Cursor cursor1=null;
-
+//        Cursor cursor1=null;
         cursor1=DBHelper.db.query(Constants.TABLE_NAME,
-                new String[]{"rowid _id",Constants.TITLE, Constants.DESCRIPTION,Constants.STATUS},
+                new String[]{"rowid _id",Constants.TITLE, Constants.DESCRIPTION,Constants.DATE,Constants.STATUS},
                 Constants.DESCRIPTION+"=?",new String[]{tmpDesc.get(tmpPosition)},null,null,null);
         cursor1.moveToFirst();
-
-//        Toast.makeText(mContext, "mainTitle "+ cursor1.getString(1).toString()+" mainDesc "+cursor1.getString(2).toString(), Toast.LENGTH_SHORT).show();
         return cursor1;
     }
 
