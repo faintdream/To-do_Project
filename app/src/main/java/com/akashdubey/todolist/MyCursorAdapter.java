@@ -123,7 +123,7 @@ public class MyCursorAdapter extends CursorAdapter {
         //db query to list all tasks
         Log.d("sometag","MyCursorAdapter dbHelper opens db connection");
 //        dbHelper.openConnection();
-
+//
         cursor1= DBHelper.db.query(
                 Constants.TABLE_NAME,
                 new String[]{"rowid _id",Constants.TITLE,Constants.DATE,Constants.DESCRIPTION,Constants.STATUS},

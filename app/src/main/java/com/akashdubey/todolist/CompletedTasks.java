@@ -25,7 +25,7 @@ public class CompletedTasks extends AppCompatActivity implements MyCursorAdapter
 
         listView=(ListView)findViewById(R.id.listview);
         dbHelper= new DBHelper(this);
-//        dbHelper.openConnection();
+        dbHelper.openConnection();
             myCursorAdapter= new MyCursorAdapter(this, MyCursorAdapter.cursor1,0);
         myCursorAdapter.getCompletedTaskData();
         listView.setAdapter(myCursorAdapter);
