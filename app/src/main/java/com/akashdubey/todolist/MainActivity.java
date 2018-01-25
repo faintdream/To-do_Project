@@ -3,6 +3,7 @@
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -35,12 +36,16 @@ import java.util.Locale;
 import db.DBHelper;
 import utils.Constants;
 
-    public class MainActivity extends AppCompatActivity implements View.OnClickListener, AddNewTask.AddNewTaskListener, MyCursorAdapter.MarkCompleteListener{
+    public class MainActivity extends AppCompatActivity implements View.OnClickListener, AddNewTask.AddNewTaskListener, MyCursorAdapter.MarkCompleteListener, ModifyTask.ModifyTaskCursorListener, ModifyTask.ModifyTaskListner{
 
     ListView listView;
     DBHelper dbHelper;
     MyCursorAdapter myCursorAdapter;
     long row;
+    ModifyTask.ModifyTaskCursorListener modifyTaskCursorListener;
+    public static String mainTitle, mainDesc;
+
+
 
         @Override
         protected void onRestart() {
@@ -49,12 +54,14 @@ import utils.Constants;
             myCursorAdapter.getAllData();
             listView.setAdapter(myCursorAdapter);
             myCursorAdapter.changeCursor(MyCursorAdapter.cursor1);
+
         }
 
         @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+//        specificDataListener=(SpecificDataListener)getApplicationContext();
 
         listView=(ListView)findViewById(R.id.listview);
         dbHelper= new DBHelper(this);
@@ -69,8 +76,11 @@ import utils.Constants;
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
 
-
-                Toast.makeText(MainActivity.this, "list item clicked", Toast.LENGTH_SHORT).show();
+             Cursor myCursor= myCursorAdapter.getSpecificData(i);
+             ModifyTask obj= new ModifyTask();
+             obj.show(getSupportFragmentManager(),"specifictag");
+             modifyTaskCursorListener=(ModifyTask.ModifyTaskCursorListener)MainActivity.this;
+             modifyTaskCursorListener.SendCursorInfo(myCursor);
             }
         });
     }
@@ -143,4 +153,21 @@ import utils.Constants;
             myCursorAdapter.swapCursor(MyCursorAdapter.cursor1);
 //            dbHelper.closeConnection();
         }
+
+
+
+        @Override
+        public void SendCursorInfo(Cursor c1) {
+
+            mainTitle=c1.getString(1);
+            mainDesc=c1.getString(2);
+
+        }
+
+
+        @Override
+        public void ModifyTask(String title, String desc, String date) {
+
+        }
     }
+

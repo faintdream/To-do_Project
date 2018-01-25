@@ -2,6 +2,7 @@ package com.akashdubey.todolist;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.os.Bundle;
 import android.support.v4.widget.CursorAdapter;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,6 +11,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 import db.DBBase;
 import db.DBHelper;
@@ -20,11 +23,13 @@ import utils.Constants;
  */
 
 public class MyCursorAdapter extends CursorAdapter {
+    public ArrayList<String> tmpDesc=new ArrayList<String>();
+
     public static Cursor cursor1;
     TextView                date1 ;
     TextView                date2 ;
-    TextView                title ;
-    TextView                description;
+    static TextView          title ;
+    static TextView                description;
     ImageView               status;
     DBHelper                dbHelper ;
     public MarkCompleteListener    listener ;
@@ -48,6 +53,7 @@ public class MyCursorAdapter extends CursorAdapter {
     @Override
     public void bindView(View view, final Context context, final Cursor cursor) {
 
+
         date1 = (TextView)view.findViewById(R.id.date1TV);
         date2 = (TextView)view.findViewById(R.id.date2TV);
         title = (TextView)view.findViewById(R.id.titleTV);
@@ -58,6 +64,7 @@ public class MyCursorAdapter extends CursorAdapter {
         date2.setText(cursor1.getString(cursor1.getColumnIndex(Constants.DATE)));
         title.setText(cursor1.getString(cursor1.getColumnIndex(Constants.TITLE)));
         description.setText(cursor1.getString(cursor1.getColumnIndex(Constants.DESCRIPTION)));
+        tmpDesc.add(description.getText().toString());
         listener = (MarkCompleteListener)context;
 
             status.setOnClickListener(new View.OnClickListener() {
@@ -95,6 +102,20 @@ public class MyCursorAdapter extends CursorAdapter {
                     Constants.STATUS+"=?",new String[]{"0"},null,null,Constants.DATE +" ASC ");
 
 
+    }
+
+
+     Cursor getSpecificData(int tmpPosition){
+
+        Cursor cursor1=null;
+
+        cursor1=DBHelper.db.query(Constants.TABLE_NAME,
+                new String[]{"rowid _id",Constants.TITLE, Constants.DESCRIPTION,Constants.STATUS},
+                Constants.DESCRIPTION+"=?",new String[]{tmpDesc.get(tmpPosition)},null,null,null);
+        cursor1.moveToFirst();
+
+//        Toast.makeText(mContext, "mainTitle "+ cursor1.getString(1).toString()+" mainDesc "+cursor1.getString(2).toString(), Toast.LENGTH_SHORT).show();
+        return cursor1;
     }
 
 
