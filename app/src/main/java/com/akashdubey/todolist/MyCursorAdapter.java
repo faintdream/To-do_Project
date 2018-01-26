@@ -124,9 +124,6 @@ public class MyCursorAdapter extends CursorAdapter {
 
     public interface MarkCompleteListener {
         public void markComplete(String status, Integer position);
-}
-
-
-
+    }
 
 }
