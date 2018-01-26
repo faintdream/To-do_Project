@@ -33,7 +33,7 @@ public class MyCursorAdapter extends CursorAdapter {
     ImageView               status;
     DBHelper                dbHelper ;
     public MarkCompleteListener    listener ;
-//    public CompletedTasks.SetIconListener setIconListener;
+
     private  Integer tmpPosition=0;
 
     public MyCursorAdapter(Context context, Cursor c, int flags) {
@@ -66,7 +66,6 @@ public class MyCursorAdapter extends CursorAdapter {
         description.setText(cursor1.getString(cursor1.getColumnIndex(Constants.DESCRIPTION)));
         tmpDesc.add(description.getText().toString());
         listener = (MarkCompleteListener) context;
-//        setIconListener=(CompletedTasks.SetIconListener) context;
 
         if (MainActivity.ICON_TASK_COMPLETE==true){
             status.setImageResource(R.drawable.complete);
@@ -78,46 +77,35 @@ public class MyCursorAdapter extends CursorAdapter {
             status.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
                     if(cursor1.getString(cursor1.getColumnIndex(Constants.STATUS)).equals("0")){
                         {
                             String tmpStatus="1";
                             Object tag= view.getTag();
                             tmpPosition=(Integer)tag;
-//                          ImageView v=(ImageView)view.findViewWithTag(tag);
-//                          v.setImageResource(R.drawable.complete);
                             cursor1.moveToPosition(tmpPosition);
                             tmpPosition=Integer.parseInt(cursor.getString(0));
-//                          Toast.makeText(context, "row ="+cursor1.getString(0)+" ID = "+cursor1.getString(1), Toast.LENGTH_SHORT).show();
-//                          Toast.makeText(context, "position"+tmpPosition, Toast.LENGTH_SHORT).show();
                             listener.markComplete(tmpStatus,tmpPosition);
+                    }
 
-                }
-
-            }
+                  }
                 }
             });
     }
-
 
 
     void getAllData(){
         //db query to list all tasks
         Log.d("sometag","MyCursorAdapter dbHelper opens db connection");
 //        dbHelper.openConnection();
-
             cursor1= DBHelper.db.query(
                     Constants.TABLE_NAME,
                     new String[]{"rowid _id",Constants.TITLE,Constants.DATE,Constants.DESCRIPTION,Constants.STATUS},
                     Constants.STATUS+"=?",new String[]{"0"},null,null,Constants.DATE +" ASC ");
-
-
     }
 
 
      Cursor getSpecificData(int tmpPosition){
-
-//        Cursor cursor1=null;
+//      Cursor cursor1=null;
         cursor1=DBHelper.db.query(Constants.TABLE_NAME,
                 new String[]{"rowid _id",Constants.TITLE, Constants.DESCRIPTION,Constants.DATE,Constants.STATUS},
                 Constants.DESCRIPTION+"=?",new String[]{tmpDesc.get(tmpPosition)},null,null,null);
@@ -128,23 +116,11 @@ public class MyCursorAdapter extends CursorAdapter {
 
     void getCompletedTaskData(){
         //db query to list all tasks
-        Log.d("sometag","MyCursorAdapter dbHelper opens db connection");
-//        dbHelper.openConnection();
-//
         cursor1= DBHelper.db.query(
                 Constants.TABLE_NAME,
                 new String[]{"rowid _id",Constants.TITLE,Constants.DATE,Constants.DESCRIPTION,Constants.STATUS},
                 Constants.STATUS+"=?",new String[]{"1"},null,null,Constants.DATE +" DESC ");
-
-
     }
-
-
-
-//    @Override
-//    public void setTaskIcon(int image) {
-//        status.setImageResource(image);
-//    }
 
     public interface MarkCompleteListener {
         public void markComplete(String status, Integer position);
