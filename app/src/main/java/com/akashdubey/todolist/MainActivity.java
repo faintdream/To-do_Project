@@ -70,6 +70,13 @@ import utils.Constants;
         listView.setAdapter(myCursorAdapter);
         myCursorAdapter.changeCursor(MyCursorAdapter.cursor1);
 
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Toast.makeText(MainActivity.this, "long pressed", Toast.LENGTH_SHORT).show();
+                return true;
+            }
+        });
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

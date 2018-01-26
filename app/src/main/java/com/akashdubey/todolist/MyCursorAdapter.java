@@ -11,9 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import java.util.ArrayList;
-
 import db.DBBase;
 import db.DBHelper;
 import utils.Constants;
@@ -28,12 +26,11 @@ public class MyCursorAdapter extends CursorAdapter {
     public static Cursor cursor1;
     TextView                date1 ;
     TextView                date2 ;
-    static TextView          title ;
-    static TextView                description;
+    static TextView         title ;
+    static TextView         description;
     ImageView               status;
     DBHelper                dbHelper ;
     public MarkCompleteListener    listener ;
-
     private  Integer tmpPosition=0;
 
     public MyCursorAdapter(Context context, Cursor c, int flags) {
@@ -45,14 +42,12 @@ public class MyCursorAdapter extends CursorAdapter {
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
        View view= LayoutInflater.from(context).inflate(R.layout.custom_view,null);
         Log.d("sometag","MyCursorAdapter layout ready");
-
         return view;
     }
 
 
     @Override
     public void bindView(View view, final Context context, final Cursor cursor) {
-
 
         date1 = (TextView)view.findViewById(R.id.date1TV);
         date2 = (TextView)view.findViewById(R.id.date2TV);
@@ -72,7 +67,6 @@ public class MyCursorAdapter extends CursorAdapter {
         }else{
             status.setImageResource(R.drawable.incomplete);
         }
-
 
             status.setOnClickListener(new View.OnClickListener() {
                 @Override
