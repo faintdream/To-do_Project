@@ -33,6 +33,7 @@ public class MyCursorAdapter extends CursorAdapter {
     ImageView               status;
     DBHelper                dbHelper ;
     public MarkCompleteListener    listener ;
+//    public CompletedTasks.SetIconListener setIconListener;
     private  Integer tmpPosition=0;
 
     public MyCursorAdapter(Context context, Cursor c, int flags) {
@@ -43,7 +44,6 @@ public class MyCursorAdapter extends CursorAdapter {
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
        View view= LayoutInflater.from(context).inflate(R.layout.custom_view,null);
-
         Log.d("sometag","MyCursorAdapter layout ready");
 
         return view;
@@ -65,25 +65,35 @@ public class MyCursorAdapter extends CursorAdapter {
         title.setText(cursor1.getString(cursor1.getColumnIndex(Constants.TITLE)));
         description.setText(cursor1.getString(cursor1.getColumnIndex(Constants.DESCRIPTION)));
         tmpDesc.add(description.getText().toString());
-        listener = (MarkCompleteListener)context;
+        listener = (MarkCompleteListener) context;
+//        setIconListener=(CompletedTasks.SetIconListener) context;
+
+        if (MainActivity.ICON_TASK_COMPLETE==true){
+            status.setImageResource(R.drawable.complete);
+        }else{
+            status.setImageResource(R.drawable.incomplete);
+        }
+
 
             status.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+
                     if(cursor1.getString(cursor1.getColumnIndex(Constants.STATUS)).equals("0")){
                         {
                             String tmpStatus="1";
                             Object tag= view.getTag();
                             tmpPosition=(Integer)tag;
-//                            ImageView v=(ImageView)view.findViewWithTag(tag);
-//                            v.setImageResource(R.drawable.complete);
+//                          ImageView v=(ImageView)view.findViewWithTag(tag);
+//                          v.setImageResource(R.drawable.complete);
                             cursor1.moveToPosition(tmpPosition);
-                    tmpPosition=Integer.parseInt(cursor.getString(0));
-                    Toast.makeText(context, "row ="+cursor1.getString(0)+" ID = "+cursor1.getString(1), Toast.LENGTH_SHORT).show();
-//                            Toast.makeText(context, "position"+tmpPosition, Toast.LENGTH_SHORT).show();
-                    listener.markComplete(tmpStatus,tmpPosition);
+                            tmpPosition=Integer.parseInt(cursor.getString(0));
+//                          Toast.makeText(context, "row ="+cursor1.getString(0)+" ID = "+cursor1.getString(1), Toast.LENGTH_SHORT).show();
+//                          Toast.makeText(context, "position"+tmpPosition, Toast.LENGTH_SHORT).show();
+                            listener.markComplete(tmpStatus,tmpPosition);
+
                 }
-                //                    Toast.makeText(context, "getting the thumbsup fine", Toast.LENGTH_SHORT).show();
+
             }
                 }
             });
@@ -129,10 +139,17 @@ public class MyCursorAdapter extends CursorAdapter {
 
     }
 
-public interface MarkCompleteListener {
 
+
+//    @Override
+//    public void setTaskIcon(int image) {
+//        status.setImageResource(image);
+//    }
+
+    public interface MarkCompleteListener {
         public void markComplete(String status, Integer position);
 }
+
 
 
 

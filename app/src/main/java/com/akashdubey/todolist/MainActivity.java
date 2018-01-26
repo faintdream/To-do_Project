@@ -44,10 +44,11 @@ import utils.Constants;
     long row;
     ModifyTask.ModifyTaskCursorListener modifyTaskCursorListener;
     public static String mainTitle, mainDesc,mainDate,mainId;
-
+    public static boolean ICON_TASK_COMPLETE=false;
         @Override
         protected void onRestart() {
             super.onRestart();
+            ICON_TASK_COMPLETE=false;
             myCursorAdapter= new MyCursorAdapter(this, MyCursorAdapter.cursor1,0);
             myCursorAdapter.getAllData();
             listView.setAdapter(myCursorAdapter);
