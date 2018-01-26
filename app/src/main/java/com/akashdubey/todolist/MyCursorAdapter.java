@@ -24,14 +24,15 @@ public class MyCursorAdapter extends CursorAdapter {
     public ArrayList<String> tmpDesc=new ArrayList<String>();
 
     public static Cursor cursor1;
+    public static View                     statusView;
     TextView                date1 ;
     TextView                date2 ;
     static TextView         title ;
     static TextView         description;
     ImageView               status;
-    DBHelper                dbHelper ;
+//    public static DBHelper                dbHelper ;
     public MarkCompleteListener    listener ;
-    private  Integer tmpPosition=0;
+    public static  Integer tmpPosition=0;
 
     public MyCursorAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
@@ -42,6 +43,7 @@ public class MyCursorAdapter extends CursorAdapter {
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
        View view= LayoutInflater.from(context).inflate(R.layout.custom_view,null);
         Log.d("sometag","MyCursorAdapter layout ready");
+
         return view;
     }
 
@@ -68,20 +70,27 @@ public class MyCursorAdapter extends CursorAdapter {
             status.setImageResource(R.drawable.incomplete);
         }
 
+
+
+
+
             status.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(cursor1.getString(cursor1.getColumnIndex(Constants.STATUS)).equals("0")){
-                        {
-                            String tmpStatus="1";
-                            Object tag= view.getTag();
-                            tmpPosition=(Integer)tag;
-                            cursor1.moveToPosition(tmpPosition);
-                            tmpPosition=Integer.parseInt(cursor.getString(0));
-                            listener.markComplete(tmpStatus,tmpPosition);
-                    }
 
-                  }
+//                    if(cursor1.getString(cursor1.getColumnIndex(Constants.STATUS)).equals("0")){
+//                        {
+//                            String tmpStatus="1";
+//                            Object tag= view.getTag();
+//                            tmpPosition=(Integer)tag;
+//                            cursor1.moveToPosition(tmpPosition);
+//                            tmpPosition=Integer.parseInt(cursor.getString(0));
+//                            listener.markComplete(tmpStatus,tmpPosition);
+//                    }
+//
+//                  }
+
+                    setStatusOnClickAction(view.getTag(),view);
                 }
             });
     }
@@ -110,14 +119,38 @@ public class MyCursorAdapter extends CursorAdapter {
 
     void getCompletedTaskData(){
         //db query to list all tasks
-        cursor1= DBHelper.db.query(
-                Constants.TABLE_NAME,
-                new String[]{"rowid _id",Constants.TITLE,Constants.DATE,Constants.DESCRIPTION,Constants.STATUS},
-                Constants.STATUS+"=?",new String[]{"1"},null,null,Constants.DATE +" DESC ");
+//        dbHelper.openConnection();
+
+        if (!DBHelper.dbHelper.db.isOpen()){
+            DBHelper.dbHelper.openConnection();
+        }
+        try{
+            cursor1= DBHelper.db.query(
+                    Constants.TABLE_NAME,
+                    new String[]{"rowid _id",Constants.TITLE,Constants.DATE,Constants.DESCRIPTION,Constants.STATUS},
+                    Constants.STATUS+"=?",new String[]{"1"},null,null,Constants.DATE +" DESC ");
+
+        }catch (Exception e){
+
+        }
+
     }
 
     public interface MarkCompleteListener {
         public void markComplete(String status, Integer position);
     }
 
+
+    void setStatusOnClickAction(Object tag, View view) {
+        if (cursor1.getString(cursor1.getColumnIndex(Constants.STATUS)).equals("0")) {
+            {
+                String tmpStatus = "1";
+//                Object tag = view.getTag();
+                tmpPosition = (Integer) tag;
+//                cursor1.moveToPosition(tmpPosition);
+                tmpPosition = Integer.parseInt(cursor1.getString(0));
+                listener.markComplete(tmpStatus, tmpPosition);
+            }
+        }
+    }
 }

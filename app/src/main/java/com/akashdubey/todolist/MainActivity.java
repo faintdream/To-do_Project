@@ -36,6 +36,8 @@ import java.util.Locale;
 import db.DBHelper;
 import utils.Constants;
 
+import static com.akashdubey.todolist.MyCursorAdapter.cursor1;
+
     public class MainActivity extends AppCompatActivity implements View.OnClickListener, AddNewTask.AddNewTaskListener, MyCursorAdapter.MarkCompleteListener, ModifyTask.ModifyTaskCursorListener, ModifyTask.ModifyTaskListner{
 
     ListView listView;
@@ -49,10 +51,10 @@ import utils.Constants;
         protected void onRestart() {
             super.onRestart();
             ICON_TASK_COMPLETE=false;
-            myCursorAdapter= new MyCursorAdapter(this, MyCursorAdapter.cursor1,0);
+            myCursorAdapter= new MyCursorAdapter(this, cursor1,0);
             myCursorAdapter.getAllData();
             listView.setAdapter(myCursorAdapter);
-            myCursorAdapter.changeCursor(MyCursorAdapter.cursor1);
+            myCursorAdapter.changeCursor(cursor1);
 
         }
 
@@ -65,15 +67,17 @@ import utils.Constants;
         listView=(ListView)findViewById(R.id.listview);
         dbHelper= new DBHelper(this);
         dbHelper.openConnection();
-        myCursorAdapter= new MyCursorAdapter(this, MyCursorAdapter.cursor1,0);
+        myCursorAdapter= new MyCursorAdapter(this, cursor1,0);
         myCursorAdapter.getAllData();
         listView.setAdapter(myCursorAdapter);
-        myCursorAdapter.changeCursor(MyCursorAdapter.cursor1);
+        myCursorAdapter.changeCursor(cursor1);
 
         listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Toast.makeText(MainActivity.this, "long pressed", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(MainActivity.this, "long pressed", Toast.LENGTH_SHORT).show();
+                Object tag=i;
+                myCursorAdapter.setStatusOnClickAction(tag,view);
                 return true;
             }
         });
@@ -140,7 +144,7 @@ import utils.Constants;
             row=dbHelper.db.insert(Constants.TABLE_NAME,null,value);
             ((BaseAdapter)listView.getAdapter()).notifyDataSetChanged();
             myCursorAdapter.getAllData();
-            myCursorAdapter.swapCursor(MyCursorAdapter.cursor1);
+            myCursorAdapter.swapCursor(cursor1);
 
             //closing db connection explicitly
             dbHelper.closeConnection();
@@ -148,6 +152,9 @@ import utils.Constants;
 
         @Override
         public void markComplete(String status, Integer position) {
+            if(!DBHelper.dbHelper.db.isOpen()){
+                dbHelper.openConnection();
+            }
             dbHelper.openConnection();
             ContentValues value= new ContentValues();
             value.put(Constants.STATUS,status);
@@ -155,7 +162,7 @@ import utils.Constants;
 
             row=dbHelper.db.update(Constants.TABLE_NAME,value,Constants.ID+"= ?",new String[]{position.toString()});
             myCursorAdapter.getAllData();
-            myCursorAdapter.swapCursor(MyCursorAdapter.cursor1);
+            myCursorAdapter.swapCursor(cursor1);
 //            dbHelper.closeConnection();
         }
 
@@ -181,7 +188,7 @@ import utils.Constants;
 
             row=dbHelper.db.update(Constants.TABLE_NAME,value,Constants.ID+"= ?",new String[]{id.toString()});
             myCursorAdapter.getAllData();
-            myCursorAdapter.swapCursor(MyCursorAdapter.cursor1);
+            myCursorAdapter.swapCursor(cursor1);
         }
     }
 
