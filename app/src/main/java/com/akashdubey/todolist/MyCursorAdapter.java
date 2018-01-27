@@ -70,27 +70,25 @@ public class MyCursorAdapter extends CursorAdapter {
             status.setImageResource(R.drawable.incomplete);
         }
 
-
-
-
-
-            status.setOnClickListener(new View.OnClickListener() {
+        status.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
-//                    if(cursor1.getString(cursor1.getColumnIndex(Constants.STATUS)).equals("0")){
-//                        {
-//                            String tmpStatus="1";
-//                            Object tag= view.getTag();
-//                            tmpPosition=(Integer)tag;
-//                            cursor1.moveToPosition(tmpPosition);
-//                            tmpPosition=Integer.parseInt(cursor.getString(0));
-//                            listener.markComplete(tmpStatus,tmpPosition);
-//                    }
-//
-//                  }
+                    if(cursor1.getString(cursor1.getColumnIndex(Constants.STATUS)).equals("0")){
+                        {
+                            String tmpStatus="1";
+                            Object tag= view.getTag();
+                            tmpPosition=(Integer)tag;
+                            cursor1.moveToPosition(tmpPosition);
+                            tmpPosition=Integer.parseInt(cursor.getString(0));
+                            listener.markComplete(tmpStatus,tmpPosition);
+                    }
 
-                    setStatusOnClickAction(view.getTag(),view);
+                  }
+//                    Object tag= view.getTag();
+//
+//
+//                    setStatusOnClickAction(tag,view);
                 }
             });
     }
@@ -145,9 +143,6 @@ public class MyCursorAdapter extends CursorAdapter {
         if (cursor1.getString(cursor1.getColumnIndex(Constants.STATUS)).equals("0")) {
             {
                 String tmpStatus = "1";
-//                Object tag = view.getTag();
-                tmpPosition = (Integer) tag;
-//                cursor1.moveToPosition(tmpPosition);
                 tmpPosition = Integer.parseInt(cursor1.getString(0));
                 listener.markComplete(tmpStatus, tmpPosition);
             }
