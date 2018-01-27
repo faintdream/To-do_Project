@@ -38,7 +38,11 @@ import utils.Constants;
 
 import static com.akashdubey.todolist.MyCursorAdapter.cursor1;
 
-    public class MainActivity extends AppCompatActivity implements View.OnClickListener, AddNewTask.AddNewTaskListener, MyCursorAdapter.MarkCompleteListener, ModifyTask.ModifyTaskCursorListener, ModifyTask.ModifyTaskListner{
+    public class MainActivity extends AppCompatActivity implements View.OnClickListener, AddNewTask.AddNewTaskListener,
+            MyCursorAdapter.MarkCompleteListener,
+            ModifyTask.ModifyTaskCursorListener,
+            ModifyTask.ModifyTaskListner
+            {
 
     ListView listView;
     DBHelper dbHelper;
@@ -189,6 +193,8 @@ import static com.akashdubey.todolist.MyCursorAdapter.cursor1;
             row=dbHelper.db.update(Constants.TABLE_NAME,value,Constants.ID+"= ?",new String[]{id.toString()});
             myCursorAdapter.getAllData();
             myCursorAdapter.swapCursor(cursor1);
+
         }
+
     }
 

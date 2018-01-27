@@ -16,6 +16,8 @@ import db.DBBase;
 import db.DBHelper;
 import utils.Constants;
 
+import static db.DBHelper.dbHelper;
+
 /**
  * Created by FLAdmin on 1/18/2018.
  */
@@ -32,17 +34,18 @@ public class MyCursorAdapter extends CursorAdapter {
     ImageView               status;
 //    public static DBHelper                dbHelper ;
     public MarkCompleteListener    listener ;
+    public DeleteListener deleteListener;
     public static  Integer tmpPosition=0;
 
     public MyCursorAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
-        Log.d("sometag","MyCursorAdapter Initialised");
+        Log.d("cursortag","MyCursorAdapter Initialised");
     }
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
        View view= LayoutInflater.from(context).inflate(R.layout.custom_view,null);
-        Log.d("sometag","MyCursorAdapter layout ready");
+        Log.d("layouttag","MyCursorAdapter layout ready");
 
         return view;
     }
@@ -50,7 +53,6 @@ public class MyCursorAdapter extends CursorAdapter {
 
     @Override
     public void bindView(View view, final Context context, final Cursor cursor) {
-
         date1 = (TextView)view.findViewById(R.id.date1TV);
         date2 = (TextView)view.findViewById(R.id.date2TV);
         title = (TextView)view.findViewById(R.id.titleTV);
@@ -63,6 +65,7 @@ public class MyCursorAdapter extends CursorAdapter {
         description.setText(cursor1.getString(cursor1.getColumnIndex(Constants.DESCRIPTION)));
         tmpDesc.add(description.getText().toString());
         listener = (MarkCompleteListener) context;
+
 
         if (MainActivity.ICON_TASK_COMPLETE==true){
             status.setImageResource(R.drawable.complete);
@@ -85,19 +88,16 @@ public class MyCursorAdapter extends CursorAdapter {
                     }
 
                   }
-//                    Object tag= view.getTag();
-//
-//
-//                    setStatusOnClickAction(tag,view);
                 }
             });
     }
 
 
     void getAllData(){
-        //db query to list all tasks
+        if (!dbHelper.db.isOpen()){
+            dbHelper.openConnection();
+        }
         Log.d("sometag","MyCursorAdapter dbHelper opens db connection");
-//        dbHelper.openConnection();
             cursor1= DBHelper.db.query(
                     Constants.TABLE_NAME,
                     new String[]{"rowid _id",Constants.TITLE,Constants.DATE,Constants.DESCRIPTION,Constants.STATUS},
@@ -106,7 +106,9 @@ public class MyCursorAdapter extends CursorAdapter {
 
 
      Cursor getSpecificData(int tmpPosition){
-//      Cursor cursor1=null;
+         if (!dbHelper.db.isOpen()){
+             dbHelper.openConnection();
+         }
         cursor1=DBHelper.db.query(Constants.TABLE_NAME,
                 new String[]{"rowid _id",Constants.TITLE, Constants.DESCRIPTION,Constants.DATE,Constants.STATUS},
                 Constants.DESCRIPTION+"=?",new String[]{tmpDesc.get(tmpPosition)},null,null,null);
@@ -116,26 +118,22 @@ public class MyCursorAdapter extends CursorAdapter {
 
 
     void getCompletedTaskData(){
-        //db query to list all tasks
-//        dbHelper.openConnection();
-
-        if (!DBHelper.dbHelper.db.isOpen()){
-            DBHelper.dbHelper.openConnection();
+        if (!dbHelper.db.isOpen()){
+            dbHelper.openConnection();
         }
-        try{
             cursor1= DBHelper.db.query(
                     Constants.TABLE_NAME,
                     new String[]{"rowid _id",Constants.TITLE,Constants.DATE,Constants.DESCRIPTION,Constants.STATUS},
                     Constants.STATUS+"=?",new String[]{"1"},null,null,Constants.DATE +" DESC ");
 
-        }catch (Exception e){
-
-        }
-
     }
 
     public interface MarkCompleteListener {
         public void markComplete(String status, Integer position);
+    }
+
+    public interface DeleteListener{
+        public void deleteTask(Integer position);
     }
 
 
@@ -146,6 +144,14 @@ public class MyCursorAdapter extends CursorAdapter {
                 tmpPosition = Integer.parseInt(cursor1.getString(0));
                 listener.markComplete(tmpStatus, tmpPosition);
             }
+        }
+    }
+
+    void setCompletedTasksListViewOnClickAction(Object tag, View view){
+        if (cursor1.getString(cursor1.getColumnIndex(Constants.STATUS)).equals("1")){
+            tmpPosition=null;
+            tmpPosition=Integer.parseInt(cursor1.getString(0));
+            deleteListener.deleteTask(tmpPosition);
         }
     }
 }
