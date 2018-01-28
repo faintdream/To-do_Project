@@ -67,13 +67,17 @@ public class ModifyTask extends AppCompatDialogFragment  {
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Integer year=mdatePicker.getYear();
-                Integer month=mdatePicker.getMonth()+1;
-                Integer day=mdatePicker.getDayOfMonth();
-                String tmpDate=year.toString()+"-"+month.toString()+"-"+day.toString();
-                listener.ModifyTask(m.mainId,mTitle.getText().toString(),
-                        mDesc.getText().toString(),tmpDate);
-                dismiss();
+                if (mTitle.length()>4 && mDesc.length()>4) {
+                    Integer year = mdatePicker.getYear();
+                    Integer month = mdatePicker.getMonth() + 1;
+                    Integer day = mdatePicker.getDayOfMonth();
+                    String tmpDate = year.toString() + "-" + month.toString() + "-" + day.toString();
+                    listener.ModifyTask(m.mainId, mTitle.getText().toString(),
+                            mDesc.getText().toString(), tmpDate);
+                    dismiss();
+                }else{
+                    Toast.makeText(getContext(), "Either Title or Desc. less than 5 characters, please fix", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

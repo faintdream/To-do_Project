@@ -146,7 +146,7 @@ import static com.akashdubey.todolist.MyCursorAdapter.cursor1;
 
             //the actual insert
             row=dbHelper.db.insert(Constants.TABLE_NAME,null,value);
-            ((BaseAdapter)listView.getAdapter()).notifyDataSetChanged();
+//            ((BaseAdapter)listView.getAdapter()).notifyDataSetChanged();
             myCursorAdapter.getAllData();
             myCursorAdapter.swapCursor(cursor1);
 
