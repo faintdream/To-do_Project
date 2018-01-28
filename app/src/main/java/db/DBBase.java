@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import utils.Constants;
 
 /**
- * This is my main db class where i create all my crud oprations
+ * This is my main db class where i create all my crud operations
  */
 
 public class DBBase extends SQLiteOpenHelper {

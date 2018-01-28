@@ -23,17 +23,13 @@ public class DBHelper {
      }
 
      public static DBHelper getInstance(Context context){
-
          if(dbHelper==null){
              dbHelper=new DBHelper(context);
-
          }
-
          return dbHelper;
      }
 
      public void openConnection(){
-
          try{
              db=dbBase.getWritableDatabase();
          }catch (Exception e){
@@ -48,6 +44,5 @@ public class DBHelper {
              db.close();
          }
      }
-
 
 }

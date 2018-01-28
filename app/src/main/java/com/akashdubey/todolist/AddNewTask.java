@@ -13,9 +13,6 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
-/**
- * Created by FLAdmin on 1/17/2018.
- */
 
 public class AddNewTask extends AppCompatDialogFragment{
     AddNewTaskListener listener;
@@ -26,11 +23,6 @@ public class AddNewTask extends AppCompatDialogFragment{
 
         listener=(AddNewTaskListener)context;
     }
-//    @Override
-//    public void onAttach(Context context) {
-//        super.onAttach(context);
-//        listener=(AddNewTaskListener)context;
-//    }
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -68,15 +60,10 @@ public class AddNewTask extends AppCompatDialogFragment{
                     Toast.makeText(getContext(), "Either Title or Desc. less than 5 characters, please fix", Toast.LENGTH_SHORT).show();
 
                 }
-
-
             }
         });
 
         return mBuilder.show();
-
-
-
     }
 
 

@@ -15,10 +15,6 @@ import utils.Constants;
 
 import static db.DBHelper.dbHelper;
 
-/**
- * Created by FLAdmin on 1/18/2018.
- */
-
 public class MyCursorAdapter extends CursorAdapter {
     public ArrayList<String> tmpDesc=new ArrayList<String>();
 
@@ -29,24 +25,19 @@ public class MyCursorAdapter extends CursorAdapter {
     static TextView         title ;
     static TextView         description;
     ImageView               status;
-//    public static DBHelper                dbHelper ;
     public MarkCompleteListener    listener ;
     public DeleteListener deleteListener;
     public static  Integer tmpPosition=0;
 
     public MyCursorAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
-        Log.d("cursortag","MyCursorAdapter Initialised");
     }
 
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
        View view= LayoutInflater.from(context).inflate(R.layout.custom_view,null);
-        Log.d("layouttag","MyCursorAdapter layout ready");
-
         return view;
     }
-
 
     @Override
     public void bindView(View view, final Context context, final Cursor cursor) {
@@ -63,7 +54,6 @@ public class MyCursorAdapter extends CursorAdapter {
         tmpDesc.add(description.getText().toString());
         listener = (MarkCompleteListener) context;
 
-
         if (MainActivity.ICON_TASK_COMPLETE==true){
             status.setImageResource(R.drawable.complete);
         }else{
@@ -73,7 +63,6 @@ public class MyCursorAdapter extends CursorAdapter {
         status.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
                     if(cursor1.getString(cursor1.getColumnIndex(Constants.STATUS)).equals("0")){
                         {
                             String tmpStatus="1";
@@ -94,7 +83,6 @@ public class MyCursorAdapter extends CursorAdapter {
         if (!dbHelper.db.isOpen()){
             dbHelper.openConnection();
         }
-        Log.d("sometag","MyCursorAdapter dbHelper opens db connection");
             cursor1= DBHelper.db.query(
                     Constants.TABLE_NAME,
                     new String[]{"rowid _id",Constants.TITLE,Constants.DATE,Constants.DESCRIPTION,Constants.STATUS},

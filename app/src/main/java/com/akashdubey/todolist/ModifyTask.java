@@ -13,10 +13,6 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
-/**
- * Created by FLAdmin on 1/25/2018.
- */
-
 public class ModifyTask extends AppCompatDialogFragment  {
     EditText mTitle;
     EditText mDesc;
@@ -27,14 +23,12 @@ public class ModifyTask extends AppCompatDialogFragment  {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        listener=(ModifyTaskListner) context;
+        listener=(ModifyTaskListener) context;
     }
 
-    ModifyTaskListner listener;
+    ModifyTaskListener listener;
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-//        return super.onCreateDialog(savedInstanceState);
-
         final AlertDialog.Builder mBuilder= new AlertDialog.Builder(getActivity());
         LayoutInflater inflater=getActivity().getLayoutInflater();
         View view=inflater.inflate(R.layout.addtask_view,null);
@@ -49,13 +43,11 @@ public class ModifyTask extends AppCompatDialogFragment  {
 
         mTitle.setText(m.mainTitle);
         mDesc.setText(m.mainDesc);
-
         String [] split=m.mainDate.split("-");
         int year=Integer.valueOf(split[0]);
         int month=(Integer.valueOf(split[1])-1);
         int day=Integer.valueOf(split[2]);
         mdatePicker.updateDate(year,month,day);
-
 
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,18 +73,15 @@ public class ModifyTask extends AppCompatDialogFragment  {
         });
 
         return mBuilder.show();
+    }
 
-
+    public interface ModifyTaskListener {
+        void ModifyTask(String id,String title, String desc, String date);
 
     }
 
-public interface ModifyTaskListner{
-        void ModifyTask(String id,String title, String desc, String date);
-
-}
-
-public interface ModifyTaskCursorListener{
-    void SendCursorInfo(Cursor c1);
-}
+    public interface ModifyTaskCursorListener{
+        void SendCursorInfo(Cursor c1);
+    }
 }
 
