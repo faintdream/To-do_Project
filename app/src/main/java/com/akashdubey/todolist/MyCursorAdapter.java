@@ -106,9 +106,6 @@ public class MyCursorAdapter extends CursorAdapter {
 
 
      Cursor getSpecificData(int tmpPosition){
-         if (!dbHelper.db.isOpen()){
-             dbHelper.openConnection();
-         }
         cursor1=DBHelper.db.query(Constants.TABLE_NAME,
                 new String[]{"rowid _id",Constants.TITLE, Constants.DESCRIPTION,Constants.DATE,Constants.STATUS},
                 Constants.DESCRIPTION+"=?",new String[]{tmpDesc.get(tmpPosition)},null,null,null);

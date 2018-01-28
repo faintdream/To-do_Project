@@ -43,8 +43,14 @@ import static com.akashdubey.todolist.MyCursorAdapter.cursor1;
             ModifyTask.ModifyTaskCursorListener,
             ModifyTask.ModifyTaskListner
             {
+                @Override
+                protected void onDestroy() {
+                    super.onDestroy();
+                    cursor1.close();
+                    dbHelper.closeConnection();
+                }
 
-    ListView listView;
+                ListView listView;
     DBHelper dbHelper;
     MyCursorAdapter myCursorAdapter;
     long row;
