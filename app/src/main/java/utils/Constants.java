@@ -1,9 +1,7 @@
 package utils;
 
 /**
- * Here i declare all Constants which i would use in the program
- * probable ones are
- * 1. DB related
+ * Using this class to systematically declare the constants for various DB fields.
  *
  */
 
