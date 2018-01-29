@@ -1,6 +1,10 @@
 package com.akashdubey.todolist;
 
+/*
+This class handles actions needed for adding new task
 
+
+ */
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -20,14 +24,13 @@ public class AddNewTask extends AppCompatDialogFragment{
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-
         listener=(AddNewTaskListener)context;
     }
 
+
+    //initializing the dialog controls and handling various onClick events.
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-
-
         final AlertDialog.Builder mBuilder= new AlertDialog.Builder(getActivity());
         LayoutInflater inflater=getActivity().getLayoutInflater();
         View view=inflater.inflate(R.layout.addtask_view,null);
@@ -67,6 +70,7 @@ public class AddNewTask extends AppCompatDialogFragment{
     }
 
 
+    //listener for handling new task add
     public interface AddNewTaskListener{
         void InsertData(String title, String desc, String date);
     }

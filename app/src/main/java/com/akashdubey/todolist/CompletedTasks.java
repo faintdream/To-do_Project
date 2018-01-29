@@ -1,5 +1,9 @@
 package com.akashdubey.todolist;
 
+
+/*
+This class handles actions needed to view  and delete completed tasks
+ */
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -10,7 +14,6 @@ import android.widget.ListView;
 
 import db.DBHelper;
 import utils.Constants;
-
 import static com.akashdubey.todolist.MyCursorAdapter.cursor1;
 
 
@@ -24,6 +27,8 @@ public class CompletedTasks extends AppCompatActivity implements
     MyCursorAdapter.DeleteListener deleteListener;
     long row;
 
+
+    //overriding onCreate  to generated needed view  and also handling longPress action
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +61,7 @@ public class CompletedTasks extends AppCompatActivity implements
 
     }
 
+    // handling action for task deletion
     @Override
     public void deleteTask(Integer position) {
         if(!DBHelper.dbHelper.db.isOpen()){

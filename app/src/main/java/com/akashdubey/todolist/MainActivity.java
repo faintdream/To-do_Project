@@ -1,5 +1,9 @@
     package com.akashdubey.todolist;
 
+
+/*
+            This class manages the first UI to shown to user and any other action which takes places from there on
+ */
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
@@ -20,6 +24,8 @@ import static com.akashdubey.todolist.MyCursorAdapter.cursor1;
             ModifyTask.ModifyTaskCursorListener,
             ModifyTask.ModifyTaskListener {
 
+
+        //gracefuly clsoing curosr and db connection
         @Override
         protected void onDestroy() {
             super.onDestroy();
@@ -33,7 +39,9 @@ import static com.akashdubey.todolist.MyCursorAdapter.cursor1;
     ModifyTask.ModifyTaskCursorListener modifyTaskCursorListener;
     public static String mainTitle, mainDesc,mainDate,mainId;
     public static boolean ICON_TASK_COMPLETE=false;
-        @Override
+
+    //handling state of thumb icon, when user returns here from other activity
+    @Override
         protected void onRestart() {
             super.onRestart();
             ICON_TASK_COMPLETE=false;
@@ -62,35 +70,42 @@ import static com.akashdubey.todolist.MyCursorAdapter.cursor1;
             }
         });
 
+        //handling list view onClick event
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                 Cursor myCursor= myCursorAdapter.getSpecificData(i);
-                 ModifyTask obj= new ModifyTask();
-                 obj.show(getSupportFragmentManager(),"specifictag");
-                 modifyTaskCursorListener=(ModifyTask.ModifyTaskCursorListener)MainActivity.this;
-                 modifyTaskCursorListener.SendCursorInfo(myCursor);
+
+                try {
+                    Cursor myCursor = myCursorAdapter.getSpecificData(i);
+                    ModifyTask obj = new ModifyTask();
+                    obj.show(getSupportFragmentManager(), "specifictag");                               //calling the alert dialog fragment
+                    modifyTaskCursorListener = (ModifyTask.ModifyTaskCursorListener) MainActivity.this;
+                    modifyTaskCursorListener.SendCursorInfo(myCursor);                                     // passing the current cursor information to Modify task action
+                }catch(Exception e){}
             }
         });
     }
 
+        //handling options menu
         @Override
         public boolean onCreateOptionsMenu(Menu menu) {
             MenuInflater menuInflater=getMenuInflater();
-            menuInflater.inflate(R.menu.main_menu,menu);
+            menuInflater.inflate(R.menu.main_menu,menu);                                          // inflating the required layout
             return super.onCreateOptionsMenu(menu);
         }
 
+
+        //handling click event for corresponding menu item
         @Override
         public boolean onOptionsItemSelected(MenuItem item) {
             int itemId=item.getItemId();
             switch(itemId){
-                case R.id.actionAdd:
+                case R.id.actionAdd:                                                                    //calling add task fragment ( alert dialog)
                     AddNewTask obj= new AddNewTask();
                     obj.show(getSupportFragmentManager(),"some tag");
                     break;
 
-                case R.id.actionAllDone:
+                case R.id.actionAllDone:                                                                //calling mark compete activity
                     Intent action= new Intent(MainActivity.this,CompletedTasks.class);
                     startActivity(action);
                     break;
@@ -107,6 +122,7 @@ import static com.akashdubey.todolist.MyCursorAdapter.cursor1;
             obj.show(getSupportFragmentManager(),"some tag");
         }
 
+        // method handles the db insert
         @Override
         public void InsertData(String title, String desc, String date) {
             dbHelper.openConnection();
@@ -123,6 +139,7 @@ import static com.akashdubey.todolist.MyCursorAdapter.cursor1;
             dbHelper.closeConnection();
         }
 
+        //method handles the db update
         @Override
         public void markComplete(String status, Integer position) {
             if(!DBHelper.dbHelper.db.isOpen()){
@@ -137,7 +154,7 @@ import static com.akashdubey.todolist.MyCursorAdapter.cursor1;
         }
 
 
-
+        //method handles the passing of cursor
         @Override
         public void SendCursorInfo(Cursor c1) {
             mainTitle=c1.getString(1);
@@ -147,6 +164,7 @@ import static com.akashdubey.todolist.MyCursorAdapter.cursor1;
         }
 
 
+        //method handles the db update
         @Override
         public void ModifyTask(String id,String title, String desc, String date) {
             dbHelper.openConnection();

@@ -1,5 +1,8 @@
 package com.akashdubey.todolist;
 
+/*
+This class handles the task modification and dialog control validation
+ */
 import android.app.Dialog;
 import android.content.Context;
 import android.database.Cursor;
@@ -27,6 +30,8 @@ public class ModifyTask extends AppCompatDialogFragment  {
     }
 
     ModifyTaskListener listener;
+
+    //creating alert dialog
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final AlertDialog.Builder mBuilder= new AlertDialog.Builder(getActivity());
@@ -55,6 +60,8 @@ public class ModifyTask extends AppCompatDialogFragment  {
                 dismiss();
             }
         });
+
+        // handling save action amd input validation
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -75,11 +82,15 @@ public class ModifyTask extends AppCompatDialogFragment  {
         return mBuilder.show();
     }
 
+
+    //declared Listened for handling Task Modification
     public interface ModifyTaskListener {
         void ModifyTask(String id,String title, String desc, String date);
 
     }
 
+
+    //declared a cursor listener to return cursor of task that needs to be modified
     public interface ModifyTaskCursorListener{
         void SendCursorInfo(Cursor c1);
     }
