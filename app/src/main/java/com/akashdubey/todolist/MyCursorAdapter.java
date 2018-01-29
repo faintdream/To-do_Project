@@ -1,4 +1,7 @@
 package com.akashdubey.todolist;
+/*
+This is the cursor adapter class, mainly used to create and manage custom listview from a cursor adapter
+ */
 
 import android.content.Context;
 import android.database.Cursor;
@@ -13,7 +16,7 @@ import java.util.ArrayList;
 import db.DBHelper;
 import utils.Constants;
 
-import static db.DBHelper.dbHelper;
+
 
 public class MyCursorAdapter extends CursorAdapter {
     public ArrayList<String> tmpDesc=new ArrayList<String>();
@@ -28,17 +31,21 @@ public class MyCursorAdapter extends CursorAdapter {
     public MarkCompleteListener    listener ;
     public DeleteListener deleteListener;
     public static  Integer tmpPosition=0;
-
+    DBHelper dbHelper= new DBHelper(mContext);
+    //constructor initialization
     public MyCursorAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
     }
 
+    // inflating the view
     @Override
     public View newView(Context context, Cursor cursor, ViewGroup parent) {
        View view= LayoutInflater.from(context).inflate(R.layout.custom_view,null);
         return view;
     }
 
+
+    //binding the controls in view with cursor indexes
     @Override
     public void bindView(View view, final Context context, final Cursor cursor) {
         date1 = (TextView)view.findViewById(R.id.date1TV);
@@ -60,9 +67,11 @@ public class MyCursorAdapter extends CursorAdapter {
             status.setImageResource(R.drawable.incomplete);
         }
 
+        //handling task complete action
         status.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+
                     if(cursor1.getString(cursor1.getColumnIndex(Constants.STATUS)).equals("0")){
                         {
                             String tmpStatus="1";
@@ -70,7 +79,7 @@ public class MyCursorAdapter extends CursorAdapter {
                             tmpPosition=(Integer)tag;
                             cursor1.moveToPosition(tmpPosition);
                             tmpPosition=Integer.parseInt(cursor.getString(0));
-                            listener.markComplete(tmpStatus,tmpPosition);
+                            listener.markComplete(tmpStatus,tmpPosition);                       // calling the task complete action
                     }
 
                   }
@@ -78,7 +87,7 @@ public class MyCursorAdapter extends CursorAdapter {
             });
     }
 
-
+    //method to query db for all data which is incomplete at the moment, in ascending order
     void getAllData(){
         if (!dbHelper.db.isOpen()){
             dbHelper.openConnection();
@@ -90,7 +99,11 @@ public class MyCursorAdapter extends CursorAdapter {
     }
 
 
+     // method to get a specific row which was chosen by user
      Cursor getSpecificData(int tmpPosition){
+         if (!dbHelper.db.isOpen()){
+             dbHelper.openConnection();
+         }
         cursor1=DBHelper.db.query(Constants.TABLE_NAME,
                 new String[]{"rowid _id",Constants.TITLE, Constants.DESCRIPTION,Constants.DATE,Constants.STATUS},
                 Constants.DESCRIPTION+"=?",new String[]{tmpDesc.get(tmpPosition)},null,null,null);
@@ -99,6 +112,7 @@ public class MyCursorAdapter extends CursorAdapter {
     }
 
 
+    // method to query and generate list of tasks which are infact completed
     void getCompletedTaskData(){
         if (!dbHelper.db.isOpen()){
             dbHelper.openConnection();
@@ -110,15 +124,19 @@ public class MyCursorAdapter extends CursorAdapter {
 
     }
 
+
+    //declaring the listener for marking task complete
     public interface MarkCompleteListener {
         public void markComplete(String status, Integer position);
     }
 
+
+    //decaring listened to handle deletetion of task
     public interface DeleteListener{
         public void deleteTask(Integer position);
     }
 
-
+    //method handles the mark complete action in the even of longpress
     void setStatusOnClickAction(Object tag, View view) {
         if (cursor1.getString(cursor1.getColumnIndex(Constants.STATUS)).equals("0")) {
             {
@@ -129,6 +147,7 @@ public class MyCursorAdapter extends CursorAdapter {
         }
     }
 
+    // method handles the delettion of task in case of longpress event
     void setCompletedTasksListViewOnClickAction(Object tag, View view){
         if (cursor1.getString(cursor1.getColumnIndex(Constants.STATUS)).equals("1")){
             tmpPosition=null;
