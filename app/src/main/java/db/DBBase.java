@@ -6,7 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import utils.Constants;
 
 /**
- * This is my main db class where i create all my crud operations
+ * Here we initialize the db and handle DDL statements
  */
 
 public class DBBase extends SQLiteOpenHelper {
@@ -27,6 +27,8 @@ public class DBBase extends SQLiteOpenHelper {
         super(context, name, factory, version);
     }
 
+
+    // overriding onCreate and onUpgrade methods to systematically handle creation and updation
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {

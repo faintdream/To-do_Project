@@ -6,9 +6,11 @@ import android.database.sqlite.SQLiteDatabase;
 import utils.Constants;
 
 /**
- * here we handle the CRUD operations
+ * here we handle db instantiation, open and close
  */
 
+
+//initializing the DBHelper constructor with db name, context and version
 public class DBHelper {
 
     public static SQLiteDatabase db;
@@ -22,6 +24,8 @@ public class DBHelper {
 
      }
 
+
+     //initialize the instance just once
      public static DBHelper getInstance(Context context){
          if(dbHelper==null){
              dbHelper=new DBHelper(context);
@@ -29,6 +33,8 @@ public class DBHelper {
          return dbHelper;
      }
 
+
+     //db connection opener
      public void openConnection(){
          try{
              db=dbBase.getWritableDatabase();
@@ -38,7 +44,7 @@ public class DBHelper {
          }
      }
 
-
+    // for gracefully clsoing db connection
      public void closeConnection(){
          if(db.isOpen()){
              db.close();
